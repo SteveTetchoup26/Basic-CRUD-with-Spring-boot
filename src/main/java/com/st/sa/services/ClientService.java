@@ -2,6 +2,7 @@ package com.st.sa.services;
 
 import com.st.sa.entities.Client;
 import com.st.sa.repositories.ClientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +45,11 @@ public class ClientService {
 //
 //        return null;
 
-        return optionalClient.orElse(null);
+//        return optionalClient.orElse(null);
+
+        return optionalClient.orElseThrow(
+                () -> new EntityNotFoundException("Mauvaise requete")
+        );
     }
 
     public Client getOrCreate(Client client) {
