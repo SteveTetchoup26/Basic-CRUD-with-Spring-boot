@@ -1,6 +1,8 @@
 package com.st.sa.services;
 
+import com.st.sa.dto.ClientDTO;
 import com.st.sa.entities.Client;
+import com.st.sa.mapper.ClientDTOMapper;
 import com.st.sa.repositories.ClientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class ClientService {
@@ -18,10 +21,12 @@ public class ClientService {
 
 //    Injection de dépendances méthode 2 et recommandée
 
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
+    private final ClientDTOMapper clientDTOMapper;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, ClientDTOMapper clientDTOMapper) {
         this.clientRepository = clientRepository;
+        this.clientDTOMapper = clientDTOMapper;
     }
 
     public void createClient(Client client){
@@ -32,8 +37,9 @@ public class ClientService {
         }
     }
 
-    public List<Client> getClients() {
-        return this.clientRepository.findAll();
+    public Stream<ClientDTO> getClients() {
+        return this.clientRepository.findAll()
+                .stream().map(clientDTOMapper);
     }
 
     public Client getClient(int id) {

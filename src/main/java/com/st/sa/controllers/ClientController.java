@@ -1,6 +1,7 @@
 package com.st.sa.controllers;
 
 
+import com.st.sa.dto.ClientDTO;
 import com.st.sa.dto.ErrorEntity;
 import com.st.sa.entities.Client;
 import com.st.sa.services.ClientService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -30,7 +32,7 @@ public class ClientController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<Client> getClients() {
+    public Stream<ClientDTO> getClients() {
         return this.clientService.getClients();
     }
 
